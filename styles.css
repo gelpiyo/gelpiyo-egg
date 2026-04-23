@@ -1,0 +1,639 @@
+:root {
+    --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    --primary-color: #ffd166;
+    --secondary-color: #118ab2;
+    --text-color: #333;
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.5);
+    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+}
+
+/* White fade overlay for smooth transitions */
+.white-fade {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s ease;
+}
+
+.white-fade.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Miss result styling */
+.miss-display {
+    font-size: 4rem;
+    margin: 30px 0;
+    animation: hatchAppear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+}
+
+.miss-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: 5px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+body {
+    font-family: 'Kosugi Maru', sans-serif;
+    color: var(--text-color);
+    background: var(--bg-gradient);
+    height: 100vh;
+    overflow: hidden;
+}
+
+#app-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    max-width: 500px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, #fff3b0 0%, #3ca0e8 100%);
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.screen.hide {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.95);
+    z-index: -1;
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+    z-index: 10;
+}
+
+/* ============================================
+   Title Screen
+   ============================================ */
+.title-overlay {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    text-align: center;
+    background: linear-gradient(180deg, #fff8dc 0%, #87ceeb 100%);
+}
+
+.title-egg-deco {
+    width: 180px;
+    height: 220px;
+    margin-bottom: 10px;
+    animation: titleEggBob 3s ease-in-out infinite;
+}
+
+.title-egg-deco svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 12px 20px rgba(0,0,0,0.15));
+}
+
+@keyframes titleEggBob {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-12px) rotate(3deg); }
+    75% { transform: translateY(-8px) rotate(-3deg); }
+}
+
+.title-text {
+    font-size: 2.8rem;
+    color: #fff;
+    text-shadow: 
+        0 3px 0 #e8a800,
+        0 6px 15px rgba(0,0,0,0.2);
+    line-height: 1.3;
+    margin-bottom: 30px;
+    animation: titlePulse 2s ease-in-out infinite;
+}
+
+@keyframes titlePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+}
+
+.title-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+}
+
+.title-btn {
+    padding: 16px 30px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-radius: 30px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.title-btn:active {
+    transform: scale(0.95);
+}
+
+.title-btn-start {
+    background: linear-gradient(135deg, #ffd166 0%, #ffb703 100%);
+    color: #5a4000;
+    box-shadow: 0 6px 20px rgba(255, 183, 3, 0.5);
+}
+
+.title-btn-start:hover {
+    box-shadow: 0 8px 25px rgba(255, 183, 3, 0.7);
+}
+
+.title-btn-book {
+    background: rgba(255, 255, 255, 0.85);
+    color: #555;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.title-btn-book:hover {
+    background: white;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.glassmorphism {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    z-index: 20;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+button, label.icon-btn {
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+}
+
+button:active, label.icon-btn:active {
+    transform: scale(0.95);
+}
+
+.icon-btn {
+    background: rgba(255, 255, 255, 0.7);
+    padding: 8px 15px;
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display: inline-block;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #ffd166 0%, #ffb703 100%);
+    color: #444;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    margin: 10px;
+}
+
+.secondary-btn {
+    background: rgba(255, 255, 255, 0.9);
+    color: #555;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    margin: 10px;
+}
+
+/* ============================================
+   Main Screen - Egg Area
+   ============================================ */
+.egg-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px;
+    position: relative; /* for particle container */
+}
+
+.message-area {
+    color: white;
+    font-size: 1.1rem;
+    background: rgba(0,0,0,0.2);
+    padding: 8px 20px;
+    border-radius: 20px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: opacity 0.3s;
+    z-index: 5;
+}
+
+/* egg-wrapper: fixed stage that NEVER moves */
+.egg-wrapper {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+}
+
+/* egg-body: the element that receives animation classes */
+.egg-body {
+    width: 280px;
+    height: 340px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    /* no background - fully transparent */
+}
+
+#egg-svg {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* Ground shadow - stays completely fixed */
+.egg-ground-shadow {
+    position: absolute;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 30px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Particle container for visual effects */
+.particle-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    font-size: 1.5rem;
+    pointer-events: none;
+    animation: particleFly 1s ease-out forwards;
+}
+
+@keyframes particleFly {
+    0% { opacity: 1; transform: translate(0, 0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--px), var(--py)) scale(0.3); }
+}
+
+/* ============================================
+   Action Buttons Grid
+   ============================================ */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    width: 100%;
+    background: var(--glass-bg);
+    padding: 12px;
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+    z-index: 5;
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.85);
+    color: #444;
+    font-size: 0.7rem;
+    padding: 8px 2px;
+    border-radius: 12px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    line-height: 1.3;
+}
+
+.action-btn:hover {
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* ============================================
+   Hatch Screen
+   ============================================ */
+.hatch-overlay {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    /* NO glassmorphism background to keep it clean */
+    background: linear-gradient(180deg, rgba(255,243,176,0.5) 0%, rgba(60,160,232,0.5) 100%);
+}
+
+/* character-display: white panel behind the character, stays fixed */
+.character-display {
+    width: 380px;
+    height: 380px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: visible;
+    /* White panel behind the character */
+    background: white;
+    border-radius: 30px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+/* Character image: floats on the white panel, JPG white bg blends into white panel */
+.hatched-img {
+    max-width: 85%;
+    max-height: 85%;
+    mix-blend-mode: multiply; /* JPG white bg merges into the white panel seamlessly */
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.15));
+    animation: hatchAppear 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both,
+               hatchFloat 3s ease-in-out 0.8s infinite;
+}
+
+@keyframes hatchAppear {
+    0% { transform: scale(0); opacity: 0; }
+    60% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes hatchFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+#hatch-title {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+#hatched-name {
+    font-size: 1.8rem;
+    color: #fff;
+    background: rgba(0,0,0,0.3);
+    padding: 8px 25px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+}
+
+/* ============================================
+   Book Screen
+   ============================================ */
+.book-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 20px 20px 0 0;
+    margin-top: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 15px;
+}
+
+.collection-card {
+    background: white;
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.card-img-wrapper {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.card-img-wrapper img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.silhouette { filter: brightness(0) invert(0.8); opacity: 0.5; }
+.card-name { font-size: 0.8rem; font-weight: bold; text-align: center; color: #555; }
+.card-count { font-size: 0.7rem; color: #888; margin-top: 5px; }
+
+/* ============================================
+   Egg Interaction Animations
+   These are applied to .egg-body ONLY
+   ============================================ */
+
+.bounce-in { animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) both; }
+
+@keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* --- HIT (のばす): vertical stretch --- */
+.anim-hit { animation: animHit 0.6s ease-in-out; }
+@keyframes animHit {
+    0%   { transform: scale(1, 1); }
+    30%  { transform: scale(0.85, 1.3); }
+    50%  { transform: scale(0.8, 1.4); }
+    70%  { transform: scale(0.9, 1.15); }
+    85%  { transform: scale(1.05, 0.95); }
+    100% { transform: scale(1, 1); }
+}
+
+/* --- SLAP: horizontal whack --- */
+.anim-slap { animation: animSlap 0.45s cubic-bezier(.36,.07,.19,.97); }
+@keyframes animSlap {
+    0%   { transform: translateX(0) rotate(0deg); }
+    20%  { transform: translateX(60px) rotate(30deg); }
+    50%  { transform: translateX(-30px) rotate(-15deg); }
+    80%  { transform: translateX(10px) rotate(5deg); }
+    100% { transform: translateX(0) rotate(0deg); }
+}
+
+/* --- STROKE: gentle loving rock --- */
+.anim-stroke { animation: animStroke 1s ease-in-out; }
+@keyframes animStroke {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    20%  { transform: rotate(-12deg) scale(1.04); }
+    40%  { transform: rotate(12deg) scale(1.06); }
+    60%  { transform: rotate(-8deg) scale(1.04); }
+    80%  { transform: rotate(5deg) scale(1.02); }
+}
+
+/* --- SHAKE: violent rattling --- */
+.anim-shake { animation: animShake 0.5s ease-in-out; }
+@keyframes animShake {
+    0%, 100% { transform: translateX(0); }
+    10% { transform: translateX(-18px) translateY(-6px) rotate(-5deg); }
+    20% { transform: translateX(18px) translateY(4px) rotate(5deg); }
+    30% { transform: translateX(-14px) translateY(-4px) rotate(-4deg); }
+    40% { transform: translateX(14px) translateY(3px) rotate(4deg); }
+    50% { transform: translateX(-10px) translateY(-3px) rotate(-3deg); }
+    60% { transform: translateX(10px) translateY(2px) rotate(3deg); }
+    70% { transform: translateX(-6px) translateY(-2px) rotate(-2deg); }
+    80% { transform: translateX(6px) translateY(1px) rotate(2deg); }
+    90% { transform: translateX(-3px) rotate(-1deg); }
+}
+
+/* --- DROP: fall from high, squash on impact --- */
+.anim-drop { animation: animDrop 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+@keyframes animDrop {
+    0%   { transform: translateY(-120px) scale(0.9, 1.1); opacity: 0.7; }
+    40%  { transform: translateY(0px) scale(1.35, 0.65); opacity: 1; }
+    55%  { transform: translateY(-35px) scale(0.85, 1.15); }
+    70%  { transform: translateY(0px) scale(1.1, 0.9); }
+    85%  { transform: translateY(-10px) scale(0.95, 1.05); }
+    100% { transform: translateY(0) scale(1); }
+}
+
+/* --- WARM: red/orange pulsating glow --- */
+.anim-warm { animation: animWarm 1.4s ease-in-out; }
+@keyframes animWarm {
+    0%, 100% { filter: none; transform: scale(1); }
+    30% { filter: drop-shadow(0 0 40px rgba(255, 120, 50, 0.8)); transform: scale(1.08); }
+    60% { filter: drop-shadow(0 0 60px rgba(255, 60, 20, 0.9)); transform: scale(1.12); }
+    80% { filter: drop-shadow(0 0 30px rgba(255, 180, 80, 0.5)); transform: scale(1.05); }
+}
+
+/* --- COOL: blue freeze with shimmer --- */
+.anim-cool { animation: animCool 1.4s ease-in-out; }
+@keyframes animCool {
+    0%, 100% { filter: none; transform: scale(1) rotate(0deg); }
+    30% { filter: drop-shadow(0 0 30px rgba(100, 200, 255, 0.8)) brightness(1.2); transform: scale(0.95); }
+    60% { filter: drop-shadow(0 0 50px rgba(50, 150, 255, 0.9)) brightness(1.3); transform: scale(0.9) rotate(-3deg); }
+    80% { filter: drop-shadow(0 0 20px rgba(120, 220, 255, 0.5)) brightness(1.1); transform: scale(0.95); }
+}
+
+/* --- STARE: shrink nervously --- */
+.anim-stare { animation: animStare 1.2s ease-in-out; }
+@keyframes animStare {
+    0%, 100% { transform: scale(1) translateY(0); }
+    20% { transform: scale(0.92) translateY(8px); }
+    50% { transform: scale(0.75) translateY(40px); }
+    70% { transform: scale(0.78) translateY(35px); }
+    90% { transform: scale(0.95) translateY(5px); }
+}
+
+/* --- SING: bounce to rhythm --- */
+.anim-sing { animation: animSing 1.2s ease-in-out; }
+@keyframes animSing {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+    15% { transform: translateY(-50px) rotate(12deg) scale(1.08); }
+    30% { transform: translateY(0) scale(0.92, 1.08); }
+    45% { transform: translateY(-35px) rotate(-12deg) scale(1.05); }
+    60% { transform: translateY(0) scale(0.95, 1.05); }
+    75% { transform: translateY(-20px) rotate(8deg) scale(1.03); }
+    90% { transform: translateY(0) scale(0.98, 1.02); }
+}
+
+/* --- LEAVE: deflate and go gray --- */
+.anim-leave { animation: animLeave 2s ease; }
+@keyframes animLeave {
+    0%, 100% { transform: scale(1); filter: none; }
+    40% { transform: scale(0.88) translateY(15px); filter: grayscale(60%); }
+    70% { transform: scale(0.9) translateY(10px); filter: grayscale(40%); }
+}
+
+/* --- PRE-HATCH: intense shaking that builds up before hatching --- */
+.anim-prehatch { animation: animPrehatch 2s ease-in-out; }
+@keyframes animPrehatch {
+    0%   { transform: translate(0, 0) scale(1); filter: none; }
+    5%   { transform: translate(-4px, 0) rotate(-2deg); }
+    10%  { transform: translate(4px, 0) rotate(2deg); }
+    15%  { transform: translate(-6px, -2px) rotate(-3deg); }
+    20%  { transform: translate(6px, 2px) rotate(3deg); }
+    25%  { transform: translate(-8px, -3px) rotate(-4deg); filter: drop-shadow(0 0 10px rgba(255,200,50,0.4)); }
+    30%  { transform: translate(8px, 3px) rotate(4deg); }
+    35%  { transform: translate(-10px, -4px) rotate(-5deg); }
+    40%  { transform: translate(10px, 4px) rotate(5deg); filter: drop-shadow(0 0 20px rgba(255,200,50,0.6)); }
+    45%  { transform: translate(-12px, -5px) rotate(-6deg); }
+    50%  { transform: translate(12px, 5px) rotate(6deg); }
+    55%  { transform: translate(-14px, -5px) rotate(-7deg); filter: drop-shadow(0 0 30px rgba(255,200,50,0.8)); }
+    60%  { transform: translate(14px, 5px) rotate(7deg); }
+    65%  { transform: translate(-16px, -6px) rotate(-8deg); }
+    70%  { transform: translate(16px, 6px) rotate(8deg); filter: drop-shadow(0 0 40px rgba(255,255,100,0.9)); }
+    75%  { transform: translate(-18px, -7px) rotate(-9deg) scale(1.05); }
+    80%  { transform: translate(18px, 7px) rotate(9deg) scale(1.05); }
+    85%  { transform: translate(-20px, -8px) rotate(-10deg) scale(1.08); filter: drop-shadow(0 0 50px rgba(255,255,150,1)); }
+    90%  { transform: translate(20px, 8px) rotate(10deg) scale(1.1); }
+    95%  { transform: translate(0, 0) scale(1.15); filter: drop-shadow(0 0 60px rgba(255,255,200,1)); }
+    100% { transform: translate(0, 0) scale(1.2); filter: drop-shadow(0 0 80px rgba(255,255,255,1)); }
+}

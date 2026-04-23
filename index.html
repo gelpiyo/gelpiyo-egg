@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>たまごでゲルぴよ！</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app-container">
+        
+        <!-- Title Screen -->
+        <div id="screen-title" class="screen active">
+            <div class="title-overlay">
+                <div class="title-egg-deco">
+                    <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="titleEggGrad" cx="35%" cy="30%" r="55%">
+                                <stop offset="0%" stop-color="#ffffff"/>
+                                <stop offset="30%" stop-color="#faf8f5"/>
+                                <stop offset="60%" stop-color="#e8e4df"/>
+                                <stop offset="85%" stop-color="#c9c4be"/>
+                                <stop offset="100%" stop-color="#a8a29e"/>
+                            </radialGradient>
+                            <radialGradient id="titleEggHL" cx="38%" cy="28%" r="25%">
+                                <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+                                <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                            </radialGradient>
+                        </defs>
+                        <path d="M100 15 C55 15 15 100 15 170 C15 225 48 248 100 248 C152 248 185 225 185 170 C185 100 145 15 100 15 Z" fill="url(#titleEggGrad)" />
+                        <ellipse cx="80" cy="80" rx="35" ry="45" fill="url(#titleEggHL)" opacity="0.6"/>
+                    </svg>
+                </div>
+                <h1 class="title-text">たまごで<br>ゲルぴよ！</h1>
+                <div class="title-buttons">
+                    <button id="btn-start" class="title-btn title-btn-start">🥚 スタート</button>
+                    <button id="btn-title-book" class="title-btn title-btn-book">📖 図鑑</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Egg Screen -->
+        <div id="screen-main" class="screen hide">
+            <header class="glassmorphism">
+                <h1>ゲルぴよ</h1>
+                <div class="header-actions">
+                    <label class="icon-btn" for="csv-upload" title="ルール(CSV)の読み込み">📁</label>
+                    <input type="file" id="csv-upload" accept=".csv" style="display: none;">
+                    <button id="nav-book-btn" class="icon-btn">📖 図鑑</button>
+                </div>
+            </header>
+            
+            <main class="egg-container">
+                <div class="message-area" id="message-area">卵を触ってみよう...</div>
+                
+                <div class="egg-wrapper" id="egg-wrapper">
+                    <div class="egg-body" id="egg-body">
+                        <svg id="egg-svg" viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <radialGradient id="eggGrad" cx="35%" cy="30%" r="55%">
+                                    <stop offset="0%" stop-color="#ffffff"/>
+                                    <stop offset="30%" stop-color="#faf8f5"/>
+                                    <stop offset="60%" stop-color="#e8e4df"/>
+                                    <stop offset="85%" stop-color="#c9c4be"/>
+                                    <stop offset="100%" stop-color="#a8a29e"/>
+                                </radialGradient>
+                                <radialGradient id="eggHighlight" cx="38%" cy="28%" r="25%">
+                                    <stop offset="0%" stop-color="rgba(255,255,255,0.9)"/>
+                                    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                                </radialGradient>
+                            </defs>
+                            <path d="M100 15 C55 15 15 100 15 170 C15 225 48 248 100 248 C152 248 185 225 185 170 C185 100 145 15 100 15 Z" 
+                                  fill="url(#eggGrad)" />
+                            <ellipse cx="80" cy="80" rx="35" ry="45" fill="url(#eggHighlight)" opacity="0.6"/>
+                        </svg>
+                    </div>
+                    <div class="egg-ground-shadow" id="egg-shadow"></div>
+                </div>
+                
+                <div class="particle-container" id="particle-container"></div>
+                
+                <div class="action-grid">
+                    <button class="action-btn" data-action="hit">🦶<span>のばす</span></button>
+                    <button class="action-btn" data-action="slap">👋<span>はたく</span></button>
+                    <button class="action-btn" data-action="stroke">🖐<span>なでる</span></button>
+                    <button class="action-btn" data-action="shake">📳<span>ゆらす</span></button>
+                    <button class="action-btn" data-action="drop">🔽<span>おとす</span></button>
+                    <button class="action-btn" data-action="warm">🔥<span>あたためる</span></button>
+                    <button class="action-btn" data-action="cool">❄️<span>ひやす</span></button>
+                    <button class="action-btn" data-action="stare">👀<span>みつめる</span></button>
+                    <button class="action-btn" data-action="sing">🎵<span>うたう</span></button>
+                    <button class="action-btn" data-action="leave">💤<span>ほったらかす</span></button>
+                </div>
+            </main>
+        </div>
+
+        <!-- Hatching Presentation Screen -->
+        <div id="screen-hatch" class="screen hide">
+            <div class="hatch-overlay">
+                <h2 id="hatch-title" class="bounce-in">うまれた！</h2>
+                <div class="character-display" id="character-display">
+                    <img id="hatched-image" class="hatched-img" src="" alt="ゲルぴよ" draggable="false">
+                </div>
+                <h3 id="hatched-name">キャラクター名</h3>
+                <div class="action-buttons">
+                    <button id="btn-back-main" class="primary-btn">もう一度育てる</button>
+                    <button id="btn-to-book" class="secondary-btn">図鑑を見る</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collection Book Screen -->
+        <div id="screen-book" class="screen hide">
+            <header class="glassmorphism">
+                <button id="nav-back-btn" class="icon-btn">◀ 戻る</button>
+                <h1>図鑑</h1>
+                <div class="spacer"></div>
+            </header>
+            <main class="book-container">
+                <div id="collection-grid" class="grid"></div>
+            </main>
+        </div>
+
+        <!-- White fade overlay for transitions -->
+        <div id="white-fade" class="white-fade"></div>
+
+    </div>
+
+    <!-- NO external dependencies - all logic is in app.js -->
+    <script src="app.js"></script>
+</body>
+</html>
