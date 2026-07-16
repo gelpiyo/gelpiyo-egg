@@ -72,6 +72,31 @@ var hatchTimeout = null;
 // ============================================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('[INIT] Game starting, ' + gerupiyoData.length + ' characters loaded.');
+
+    // ============================================
+    // ダブルタップズーム完全防止
+    // ============================================
+    var lastTouchEnd = 0;
+    document.addEventListener('touchend', function(e) {
+        var now = Date.now();
+        if (now - lastTouchEnd <= 300) {
+            e.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, { passive: false });
+
+    // ピンチズーム防止
+    document.addEventListener('touchmove', function(e) {
+        if (e.touches.length > 1) {
+            e.preventDefault();
+        }
+    }, { passive: false });
+
+    // iOS Safari gestureイベントによるズーム防止
+    document.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
+    }, { passive: false });
+
     bindEvents();
     // Always force title screen on load
     showScreen('screen-title');
