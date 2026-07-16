@@ -76,7 +76,55 @@ document.addEventListener('DOMContentLoaded', function() {
     // Always force title screen on load
     showScreen('screen-title');
     console.log('[INIT] Events bound successfully. Title screen active.');
+
+    // ============================================
+    // フルスクリーン起動処理（G123風）
+    // ============================================
+    var splash = document.getElementById('fullscreen-splash');
+    var appContainer = document.getElementById('app-container');
+
+    // タッチデバイス判定
+    var isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+    if (splash && isTouchDevice) {
+        // スマホ: タップでフルスクリーン起動
+        splash.addEventListener('click', function() {
+            requestFullscreen(appContainer);
+            splash.classList.add('hidden');
+        });
+
+        // フルスクリーン解除時のハンドリング
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    } else if (splash) {
+        // PC: スプラッシュをスキップ（クリックで閉じる）
+        splash.addEventListener('click', function() {
+            splash.classList.add('hidden');
+        });
+    }
+
+    function handleFullscreenChange() {
+        var isFullscreen = !!(document.fullscreenElement || document.webkitFullscreenElement);
+        if (!isFullscreen) {
+            console.log('[FULLSCREEN] Exited fullscreen mode');
+        }
+    }
 });
+
+// フルスクリーンAPI呼び出し
+function requestFullscreen(el) {
+    if (el.requestFullscreen) {
+        el.requestFullscreen().catch(function(e) {
+            console.log('[FULLSCREEN] Request failed:', e);
+        });
+    } else if (el.webkitRequestFullscreen) {
+        el.webkitRequestFullscreen();
+    } else if (el.msRequestFullscreen) {
+        el.msRequestFullscreen();
+    }
+    // スクロールしてアドレスバーを隠す（フルスクリーンAPIが使えない場合のフォールバック）
+    window.scrollTo(0, 1);
+}
 
 // ============================================
 // Event Binding

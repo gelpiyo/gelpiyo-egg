@@ -2,8 +2,12 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>たまごでゲルぴよ！</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#fff8dc">
+    <title>GELPIYO EGG!</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
@@ -34,7 +38,7 @@
                         <ellipse cx="80" cy="80" rx="35" ry="45" fill="url(#titleEggHL)" opacity="0.6"/>
                     </svg>
                 </div>
-                <h1 class="title-text">たまごで<br>ゲルぴよ！</h1>
+                <h1 class="title-text">GELPIYO<br>EGG!</h1>
                 <div class="title-buttons">
                     <button id="btn-start" class="title-btn title-btn-start">🥚 スタート</button>
                     <button id="btn-title-book" class="title-btn title-btn-book">📖 図鑑</button>
@@ -45,7 +49,7 @@
         <!-- Main Egg Screen -->
         <div id="screen-main" class="screen hide">
             <header class="glassmorphism">
-                <h1>ゲルぴよ</h1>
+                <h1>GELPIYO EGG!</h1>
                 <div class="header-actions">
                     <label class="icon-btn" for="csv-upload" title="ルール(CSV)の読み込み">📁</label>
                     <input type="file" id="csv-upload" accept=".csv" style="display: none;">
@@ -127,6 +131,29 @@
         <!-- White fade overlay for transitions -->
         <div id="white-fade" class="white-fade"></div>
 
+    </div>
+
+    <!-- フルスクリーン起動オーバーレイ（スマホ向け） -->
+    <div id="fullscreen-splash" class="fullscreen-splash">
+        <div class="splash-content">
+            <div class="splash-egg">
+                <svg viewBox="0 0 200 260" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <radialGradient id="splashEggGrad" cx="35%" cy="30%" r="55%">
+                            <stop offset="0%" stop-color="#ffffff"/>
+                            <stop offset="30%" stop-color="#faf8f5"/>
+                            <stop offset="60%" stop-color="#e8e4df"/>
+                            <stop offset="85%" stop-color="#c9c4be"/>
+                            <stop offset="100%" stop-color="#a8a29e"/>
+                        </radialGradient>
+                    </defs>
+                    <path d="M100 15 C55 15 15 100 15 170 C15 225 48 248 100 248 C152 248 185 225 185 170 C185 100 145 15 100 15 Z" fill="url(#splashEggGrad)" />
+                </svg>
+            </div>
+            <h1 class="splash-title">GELPIYO EGG!</h1>
+            <p class="splash-tap">TAP TO START</p>
+            <p class="splash-tap-sub">タップしてフルスクリーンで遊ぶ</p>
+        </div>
     </div>
 
     <!-- NO external dependencies - all logic is in app.js -->

@@ -51,20 +51,123 @@
 body {
     font-family: 'Kosugi Maru', sans-serif;
     color: var(--text-color);
-    background: var(--bg-gradient);
+    background: #000;
     height: 100vh;
+    height: 100dvh;
+    width: 100vw;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
+    /* iOS safe-area対応 */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #app-container {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     position: relative;
     max-width: 500px;
+    max-height: 100%;
     margin: 0 auto;
     background: linear-gradient(180deg, #fff3b0 0%, #3ca0e8 100%);
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+/* フルスクリーン時: max-width解除して全画面化 */
+#app-container:fullscreen,
+#app-container:-webkit-full-screen {
+    max-width: none;
+}
+
+/* フルスクリーン時のbodyも黒背景不要 */
+:fullscreen body,
+:-webkit-full-screen body {
+    background: none;
+}
+
+/* ============================================
+   フルスクリーン起動スプラッシュ（G123風）
+   ============================================ */
+.fullscreen-splash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    background: linear-gradient(180deg, #fff8dc 0%, #87ceeb 60%, #5b9bd5 100%);
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.fullscreen-splash.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-content {
+    text-align: center;
+    animation: splashBreath 2s ease-in-out infinite;
+}
+
+@keyframes splashBreath {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.splash-egg {
+    width: 120px;
+    height: 160px;
+    margin: 0 auto 20px;
+    animation: splashEggBob 2.5s ease-in-out infinite;
+}
+
+.splash-egg svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 8px 20px rgba(0,0,0,0.15));
+}
+
+@keyframes splashEggBob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.splash-title {
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 
+        0 3px 0 #e8a800,
+        0 6px 15px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+    letter-spacing: 0.1em;
+}
+
+.splash-tap {
+    font-size: 1.2rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    animation: splashTapPulse 1.5s ease-in-out infinite;
+    letter-spacing: 0.15em;
+    font-weight: bold;
+}
+
+.splash-tap-sub {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+    margin-top: 8px;
+}
+
+@keyframes splashTapPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
 .screen {
@@ -126,13 +229,14 @@ body {
 }
 
 .title-text {
-    font-size: 2.8rem;
+    font-size: 3.2rem;
     color: #fff;
     text-shadow: 
         0 3px 0 #e8a800,
         0 6px 15px rgba(0,0,0,0.2);
-    line-height: 1.3;
+    line-height: 1.2;
     margin-bottom: 30px;
+    letter-spacing: 0.08em;
     animation: titlePulse 2s ease-in-out infinite;
 }
 
