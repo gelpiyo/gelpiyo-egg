@@ -1,0 +1,30 @@
+name: Deploy to Firebase Hosting
+
+# mainブランチへのpush時に自動デプロイ
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    # GitHub ActionsにFirebaseデプロイの権限を付与
+    permissions:
+      contents: read
+
+    steps:
+      # 1. リポジトリをcheckout
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Firebase Hosting にデプロイ
+      # サービスアカウントキーで認証し、本番チャンネルにデプロイする
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
+          projectId: '${{ secrets.FIREBASE_PROJECT_ID }}'
