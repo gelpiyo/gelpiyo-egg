@@ -58,8 +58,6 @@ body {
     overflow: hidden;
     margin: 0;
     padding: 0;
-    /* iOS safe-area対応 */
-    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
 }
 
 #app-container {
@@ -205,6 +203,9 @@ body {
     align-items: center;
     justify-content: center;
     padding: 30px 20px;
+    /* iOS safe-area対応 */
+    padding-top: calc(30px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(30px + env(safe-area-inset-bottom, 0px));
     text-align: center;
     background: linear-gradient(180deg, #fff8dc 0%, #87ceeb 100%);
 }
@@ -300,6 +301,8 @@ header {
     align-items: center;
     justify-content: space-between;
     padding: 15px 20px;
+    /* iOS ステータスバーとの重なり防止 */
+    padding-top: calc(15px + env(safe-area-inset-top, 0px));
     z-index: 20;
 }
 
@@ -366,6 +369,8 @@ button:active, label.icon-btn:active {
     align-items: center;
     justify-content: space-between;
     padding: 10px 10px;
+    /* iOS アドレスバーとの重なり防止 */
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
     position: relative; /* for particle container */
 }
 
